@@ -175,4 +175,3 @@ if (isloggedin() and !isguestuser()) {
     }
 
 }
-?>

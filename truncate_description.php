@@ -51,4 +51,3 @@ function _trunc_ds ($string, $lines=2) {
     }
     return trim($out);
 }
-?>
