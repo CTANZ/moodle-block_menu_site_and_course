@@ -109,14 +109,16 @@ class block_menu_site_and_course extends block_base {
         if (!empty($sections)) {
             foreach($sections as $section) {
                 if ($section->visible && $section->section > 0 && $section->section <= $COURSE->numsections) {
-                    $summary = strip_tags($section->summary);//truncate_description($section->summary);
+                    $summary = strip_tags($section->summary);//truncate_description($section->summary);                   
+                    $name = strip_tags($section->name);
                     if (empty($summary)) {
                         $summary = get_string("name{$COURSE->format}",'block_menu_site_and_course').' '.$section->section;
                     }
                 $text .='<li class="r0';
                 if(!empty($_GET[$format]) && $_GET[$format]==$section->section) {$text.=' current';}
                 $text .='">';
-                $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">'.$summary.'</a></div></li>';
+                $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">';
+                if (!empty($summary) && empty($name)) { $text .= $summary.'</a></div></li>'; } else {$text .= $name.'</a></div></li>';}
             }
         }
           
