@@ -16,12 +16,14 @@ function truncate_description($string) {
 mb_internal_encoding("UTF-8");
 
 function _trunc_ds ($string, $lines=2) {
-    global $THEME;
+    global $PAGE;
+    $navmenuwidth = isset($PAGE->theme->settings->navmenuwidth)?$PAGE->theme->settings->navmenuwidth:50;
 
     $br='-+*br*+-';  // temp placeholders for br, h and p tags
     $hp='-+*hp*+-';
 
-    $string=html_entity_decode(trim(preg_replace("/(&nbsp;|\s)+/", " ",
+    // multiple spaces seem to throw it off if we don't use an mb_ function to squash spaces
+    $string=html_entity_decode(trim(mb_ereg_replace("/(&nbsp;|\s)+/", " ",
         strip_tags(preg_replace("/(\s?<br\s*\/?>\s?)+/i", " $br ", 
         preg_replace("/(\s?(<\/?p>|<\/?h[0-9]>)\s?)+/"," $hp ",$string))))),ENT_NOQUOTES,'UTF-8');
 
@@ -37,7 +39,7 @@ function _trunc_ds ($string, $lines=2) {
             break;
         case $hp: break ($out? 2:1);
         default:
-            while(mb_strlen($w) > ($ch=$THEME->navmenuwidth-$len)) {
+            while(mb_strlen($w) > ($ch=$navmenuwidth-$len)) {
                 if($len && --$lines) {$ch+=$len; $len=0;}     //self-break on space
 
                 if(mb_strlen($w) > $ch) {

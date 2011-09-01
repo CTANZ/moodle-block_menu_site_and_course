@@ -109,7 +109,7 @@ class block_menu_site_and_course extends block_base {
         if (!empty($sections)) {
             foreach($sections as $section) {
                 if ($section->visible && $section->section > 0 && $section->section <= $COURSE->numsections) {
-                    $summary = strip_tags($section->summary);//truncate_description($section->summary);                   
+                    $summary = truncate_description($section->summary); //strip_tags($section->summary);
                     $name = strip_tags($section->name);
                     if (empty($summary)) {
                         $summary = get_string("name{$COURSE->format}",'block_menu_site_and_course').' '.$section->section;
