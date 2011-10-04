@@ -35,7 +35,7 @@ class block_menu_site_and_course extends block_base {
         $this->content = new stdClass;
         $this->content->text = '';
         $this->content->footer = '';
-        $sections = get_all_sections($COURSE->id);
+        $sections = function_exists('get_all_sections')? get_all_sections($COURSE->id): Array();
         $sectionname = get_string("name".$COURSE->format,'block_menu_site_and_course');
         $sectiongroup = $COURSE->format;
 
@@ -70,7 +70,7 @@ class block_menu_site_and_course extends block_base {
          $showlogin = 0;
         require_once($CFG->dirroot.'/blocks/menu_site_and_course/truncate_description.php');
         
-        $sections = isset($COURSE->id)? get_all_sections($COURSE->id): Array();
+        $sections = isset($COURSE->id)&&function_exists('get_all_sections')? get_all_sections($COURSE->id): Array();
 
         $format = (!isset($COURSE->format) 
             || $COURSE->format == 'topics'
