@@ -1,6 +1,9 @@
 <?php
-$string['blocktitle'] = 'Kurs Menü';
-$string['pluginname'] = 'Kurs Menü';
+/* DE translation added by actxc.de 2011*/
+/* Umlaute vorsichtshalber als HTML-Code einfÃ¼gen */
+/* use HTML-code for Umlaut */
+$string['blocktitle'] = 'Kurs Men&uuml;';
+$string['pluginname'] = 'Kurs Men&uuml;';
 $string['namesections'] = 'Abschnitt';
 $string['nametopics'] = 'Inhalt';
 $string['nameweeks'] = 'Woche';
