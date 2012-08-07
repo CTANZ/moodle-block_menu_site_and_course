@@ -72,9 +72,7 @@ class block_menu_site_and_course extends block_base {
         
         $sections = isset($COURSE->id)&&function_exists('get_all_sections')? get_all_sections($COURSE->id): Array();
 
-        $format = (!isset($COURSE->format) 
-            || $COURSE->format == 'topics'
-            || $COURSE->format == 'sections')? 'topic' : 'week';
+        $format = 'section';
 
         $text = '';
         $text .= '<div id="nav">';
