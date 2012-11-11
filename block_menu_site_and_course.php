@@ -108,9 +108,19 @@ class block_menu_site_and_course extends block_base {
 
 
         // LESSON MENU
+        $context = context_course::instance($COURSE->id);
+        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
         if (!empty($sections)) {
             foreach($sections as $section) {
-                if ($section->visible && $section->section > 0 && $section->section <= $COURSE->numsections) {
+                if (!empty($CFG->enableavailability)) {
+                    $ci = new condition_info_section($section, CONDITION_MISSING_EXTRATABLE);
+                    $info = '';
+                    $available = $ci->is_available($info);
+                } else {
+                    // Availability disabled, assume available
+                    $available = true;
+                }
+                if ($section->visible && $section->section > 0 && $section->section <= $COURSE->numsections && ($available || $section->showavailability)) {
                     $summary = truncate_description($section->summary); //strip_tags($section->summary);
                     $name = strip_tags($section->name);
                     if (empty($summary)) {
@@ -119,8 +129,19 @@ class block_menu_site_and_course extends block_base {
                 $text .='<li class="r0';
                 if(!empty($_GET[$format]) && $_GET[$format]==$section->section) {$text.=' current';}
                 $text .='">';
-                $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">';
-                if (!empty($summary) && empty($name)) { $text .= $summary.'</a></div></li>'; } else {$text .= $name.'</a></div></li>';}
+                $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1">';
+                if(!$available) {
+                    // Section not available - show greyed out (no link)
+                    $text .= '<span class="unavailable">';
+                    $text .= (!empty($summary) && empty($name)) ? $summary : $name;
+                    $text .= '</span>';
+                } else {
+                    // Section available - show link
+                    $text .= '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">';
+                    $text .= (!empty($summary) && empty($name)) ? $summary : $name;
+                    $text .= '</a>';
+                }
+                $text .= '</div></li>';
             }
         }
           

@@ -14,3 +14,5 @@ div.block_menu_site_and_course ul,
 div.block_menu_site_and_course li {clear:both;}
 div.block_menu_site_and_course li div.icon {float:left; clear:left;}
 div.block_menu_site_and_course li div.c1 {float:left; width:160px;}
+
+div.block_menu_site_and_course li span.unavailable {color:#999;}
