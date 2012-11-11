@@ -172,7 +172,7 @@ if (isloggedin() and !isguestuser()) {
         }
     } 
 
-          $text .= '</ul></div>';
+          $text .= '</ul><br clear="all" /></div>';
 
 
     return $text;
