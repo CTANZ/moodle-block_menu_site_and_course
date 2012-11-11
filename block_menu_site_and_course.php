@@ -16,6 +16,10 @@ class block_menu_site_and_course extends block_base {
     function preferred_width() {
         return 210;
     }
+
+    public function instance_can_be_hidden() {
+        return $this->user_can_edit();
+    }
     
     function get_content() {
         global $USER, $CFG, $COURSE;
