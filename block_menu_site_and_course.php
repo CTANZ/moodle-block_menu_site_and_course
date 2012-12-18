@@ -106,6 +106,14 @@ class block_menu_site_and_course extends block_base {
             // LESSON MENU
             $context = context_course::instance($COURSE->id);
             $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
+            if (function_exists('course_get_format')) {
+                // Moodle 2.4
+                $course = course_get_format($COURSE)->get_course();
+                $numsections = $course->numsections;
+            } else {
+                // Moodle 2.0-2.3
+                $numsections = $COURSE->numsections;
+            }
             if (!empty($sections)) {
                 foreach($sections as $section) {
                     if (!empty($CFG->enableavailability)) {
@@ -116,7 +124,7 @@ class block_menu_site_and_course extends block_base {
                         // Availability disabled, assume available
                         $available = true;
                     }
-                    if ($section->visible && $section->section > 0 && $section->section <= $COURSE->numsections && ($available || $section->showavailability)) {
+                    if ($section->visible && $section->section > 0 && $section->section <= $numsections && ($available || $section->showavailability)) {
                         $summary = truncate_description($section->summary); //strip_tags($section->summary);
                         $name = strip_tags($section->name);
                         if (empty($summary)) {
@@ -142,7 +150,7 @@ class block_menu_site_and_course extends block_base {
                 }
               
                 // SHOW ALL
-                $text .='<li class="showall"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'=all" alt="'.get_string("showall",'moodle',$COURSE->numsections).'">'.get_string("showall",'block_menu_site_and_course').'</a>';
+                $text .='<li class="showall"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'=all" alt="'.get_string("showall",'moodle',$numsections).'">'.get_string("showall",'block_menu_site_and_course').'</a>';
        
                 $text .= '</ul>';
               
