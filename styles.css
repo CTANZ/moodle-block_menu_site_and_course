@@ -12,7 +12,8 @@ background-color:#DCE7EB;
 
 div.block_menu_site_and_course ul,
 div.block_menu_site_and_course li {clear:both;}
-div.block_menu_site_and_course li div.icon {float:left; clear:left;}
-div.block_menu_site_and_course li div.c1 {float:left; width:160px;}
+div.block_menu_site_and_course .content ul.list li div.c1 {display:inline-block; width:166px; margin-left:2px; vertical-align:top;}
 
 div.block_menu_site_and_course li span.unavailable {color:#999;}
+
+div.block_menu_site_and_course li.yui3-dd-drop div.icon {cursor:move;}

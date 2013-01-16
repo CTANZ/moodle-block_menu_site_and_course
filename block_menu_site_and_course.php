@@ -7,6 +7,7 @@
  */
  
 class block_menu_site_and_course extends block_base {
+    private static $hassectiondragjs = false;
     function init() {
         $this->title = get_string('blocktitle','block_menu_site_and_course');
         $this->content_type = BLOCK_TYPE_TEXT;
@@ -61,7 +62,7 @@ class block_menu_site_and_course extends block_base {
   
   
     function get_tab_like_button_content($level) {
-        global $CFG, $DB, $COURSE, $OUTPUT;
+        global $CFG, $DB, $COURSE, $OUTPUT, $PAGE;
 
         /* Options you can set
          * 1 = show
@@ -100,6 +101,7 @@ class block_menu_site_and_course extends block_base {
                 //          $text .='<li class="h"><a href="'.$CFG->wwwroot.'/login/logout.php">'.get_string('logout', 'moodle').'</a></li>';
             }
         }
+        $text .= '</ul><ul class="list section-list">';
 
         // === Course-only Items ====
         if ($level != 'site'){
@@ -130,7 +132,7 @@ class block_menu_site_and_course extends block_base {
                         if (empty($summary)) {
                             $summary = get_string("name{$COURSE->format}",'block_menu_site_and_course').' '.$section->section;
                         }
-                        $text .='<li class="r0';
+                        $text .='<li data-sectionid="'.$section->section.'" class="r0';
                         if(!empty($_GET[$format]) && $_GET[$format]==$section->section) {$text.=' current';}
                         $text .='">';
                         $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1">';
@@ -149,13 +151,13 @@ class block_menu_site_and_course extends block_base {
                     }
                 }
               
-                // SHOW ALL
-                $text .='<li class="showall"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'=all" alt="'.get_string("showall",'moodle',$numsections).'">'.get_string("showall",'block_menu_site_and_course').'</a>';
-       
                 $text .= '</ul>';
               
                 $text .= '<ul class="list">';
               
+                // SHOW ALL
+                $text .='<li class="showall"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'=all" alt="'.get_string("showall",'moodle',$numsections).'">'.get_string("showall",'block_menu_site_and_course').'</a>';
+       
                 if (isloggedin() and !isguestuser()) {
                     // PARTICIPANTS
                     if ($showparticipants){
@@ -182,6 +184,16 @@ class block_menu_site_and_course extends block_base {
         }
 
         $text .= '</ul><br clear="all" /></div>';
+
+        if ($PAGE->user_is_editing() && !self::$hassectiondragjs) {
+            $PAGE->requires->yui_module('moodle-block_menu_site_and_course-dragdrop', 'M.block_menu_site_and_course.init_section_dragdrop', 
+                array(array(
+                    'courseid' => $COURSE->id,
+                    'ajaxurl' => '/course/rest.php'
+                ))
+            );
+            self::$hassectiondragjs = true;
+        }
 
         return $text;
     }
