@@ -126,7 +126,7 @@ class block_menu_site_and_course extends block_base {
                         // Availability disabled, assume available
                         $available = true;
                     }
-                    if ($section->visible && $section->section > 0 && $section->section <= $numsections && ($available || $section->showavailability)) {
+                    if (($section->visible || $PAGE->user_is_editing()) && $section->section > 0 && $section->section <= $numsections && ($available || $section->showavailability || $PAGE->user_is_editing())) {
                         $summary = truncate_description($section->summary); //strip_tags($section->summary);
                         $name = strip_tags($section->name);
                         if (empty($summary)) {
@@ -136,15 +136,15 @@ class block_menu_site_and_course extends block_base {
                         if(!empty($_GET[$format]) && $_GET[$format]==$section->section) {$text.=' current';}
                         $text .='">';
                         $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1">';
-                        if(!$available) {
+                        $caption = (!empty($summary) && empty($name)) ? $summary : $name;
+                        if(!$available && !$PAGE->user_is_editing()) {
                             // Section not available - show greyed out (no link)
-                            $text .= '<span class="unavailable">';
-                            $text .= (!empty($summary) && empty($name)) ? $summary : $name;
-                            $text .= '</span>';
+                            $text .= '<span class="unavailable">'.$caption.'</span>';
                         } else {
                             // Section available - show link
-                            $text .= '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">';
-                            $text .= (!empty($summary) && empty($name)) ? $summary : $name;
+                            $class = ($section->visible && $available)?'':' class="unavailable"';
+                            $text .= '<a'.$class.' href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'='.$section->section.'" title="View '.strip_tags(str_replace('-', '',$summary)).'">';
+                            $text .= $caption;
                             $text .= '</a>';
                         }
                         $text .= '</div></li>';
