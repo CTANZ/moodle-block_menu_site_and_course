@@ -185,7 +185,7 @@ class block_menu_site_and_course extends block_base {
 
         $text .= '</ul><br clear="all" /></div>';
 
-        if ($PAGE->user_is_editing() && !self::$hassectiondragjs) {
+        if ($PAGE->user_is_editing() && !self::$hassectiondragjs && $PAGE->pagelayout === 'course') {
             $PAGE->requires->yui_module('moodle-block_menu_site_and_course-dragdrop', 'M.block_menu_site_and_course.init_section_dragdrop', 
                 array(array(
                     'courseid' => $COURSE->id,
