@@ -5,7 +5,7 @@
  * Based on an earlier menu of mine.
  * Last update: March 26, 2008
  */
- 
+
 class block_menu_site_and_course extends block_base {
     private static $hassectiondragjs = false;
     function init() {
@@ -40,7 +40,7 @@ class block_menu_site_and_course extends block_base {
         $this->content = new stdClass;
         $this->content->text = '';
         $this->content->footer = '';
-        $sections = function_exists('get_all_sections')? get_all_sections($COURSE->id): Array();
+
         $sectionname = get_string("name".$COURSE->format,'block_menu_site_and_course');
         $sectiongroup = $COURSE->format;
 
@@ -51,16 +51,15 @@ class block_menu_site_and_course extends block_base {
             //NOT NEEDED HERE          
             $level = 'course';
         }
-        
-            
+
         ob_start();
         print $this->get_tab_like_button_content($level);
         $this->content->text = ob_get_contents();
-        ob_end_clean();        
+        ob_end_clean();
         //     return $this->content;
     }
-  
-  
+
+
     function get_tab_like_button_content($level) {
         global $CFG, $DB, $COURSE, $OUTPUT, $PAGE;
 
@@ -75,14 +74,14 @@ class block_menu_site_and_course extends block_base {
         $showlogin = 0;
         require_once($CFG->dirroot.'/blocks/menu_site_and_course/truncate_description.php');
         
-        $sections = (isset($COURSE->id) && function_exists('get_all_sections')) ? get_all_sections($COURSE->id) : Array();
+        $sections = (isset($COURSE->id)) ? get_fast_modinfo($COURSE->id)->get_section_info_all() : Array();
 
         $format = 'section';
 
         $text = '';
         $text .= '<div id="nav">';
         $text .= '<ul class="list">';
-        
+
         /* ==== THE BUTTONS START HERE ==== */
         // HOME
         if ($level != 'site'){
@@ -94,7 +93,7 @@ class block_menu_site_and_course extends block_base {
         // LOGIN
         
         if ($showlogin){
-            if (!isloggedin() or isguestuser()) { 
+            if (!isloggedin() or isguestuser()) {
                 $text .='<li class="h"><a href="'.$CFG->wwwroot.'/login/">'.get_string('login', 'moodle').'</a></li>';
                 // If you want a "logout" button, too, then uncomment the following 2 lines.
                 //     } else {
@@ -172,7 +171,7 @@ class block_menu_site_and_course extends block_base {
             }
         }
 
-        if (isloggedin() and !isguestuser()) { 
+        if (isloggedin() and !isguestuser()) {
             if ($showprofile){
                 $text .='<li class="h"><a href="'.$CFG->wwwroot.'/user/view.php?id='.$USER->id.'&course='.$COURSE->id.'">'.get_string('profile', 'moodle').'</a></li>';
             }
