@@ -37,7 +37,12 @@ function _trunc_ds ($string, $lines=2) {
                 $out.='<br />'; $len=0;
             }
             break;
-        case $hp: break ($out? 2:1);
+        case $hp:
+            if ($out) {
+                break 2;
+            } else {
+                break;
+            }
         default:
             while(mb_strlen($w) > ($ch=$navmenuwidth-$len)) {
                 if($len && --$lines) {$ch+=$len; $len=0;}     //self-break on space
