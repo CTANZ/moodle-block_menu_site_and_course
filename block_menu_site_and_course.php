@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* Menu Block
  * Charles Kelly, March 2008
  * Note around line 52 there are some options you can set.
@@ -13,7 +13,7 @@ class block_menu_site_and_course extends block_base {
         $this->content_type = BLOCK_TYPE_TEXT;
         $this->version = 2008032400;
     }
-    
+
     function preferred_width() {
         return 210;
     }
@@ -21,7 +21,7 @@ class block_menu_site_and_course extends block_base {
     public function instance_can_be_hidden() {
         return $this->user_can_edit();
     }
-    
+
     function get_content() {
         global $USER, $CFG, $COURSE;
 
@@ -32,7 +32,7 @@ class block_menu_site_and_course extends block_base {
         $this->content = new stdClass;
         $this->content->text = '';
         $this->content->footer = '';
-        
+
         if (empty($this->instance)) {
             return $this->content;
         }
@@ -46,9 +46,9 @@ class block_menu_site_and_course extends block_base {
 
         if ($COURSE->id == SITEID) {  // Site-level
             $level = 'site';
-            //NOT NEEDED HERE        
+            //NOT NEEDED HERE
         } else { // Course-level
-            //NOT NEEDED HERE          
+            //NOT NEEDED HERE
             $level = 'course';
         }
 
@@ -73,7 +73,7 @@ class block_menu_site_and_course extends block_base {
         $showprofile = 0;
         $showlogin = 0;
         require_once($CFG->dirroot.'/blocks/menu_site_and_course/truncate_description.php');
-        
+
         $sections = (isset($COURSE->id)) ? get_fast_modinfo($COURSE->id)->get_section_info_all() : Array();
 
         $format = 'section';
@@ -89,9 +89,9 @@ class block_menu_site_and_course extends block_base {
         } else {
             $text .='<li class="h"><a href="'.$CFG->wwwroot.'/">'.get_string('home', 'moodle').'</a></li>';
         }
-        
+
         // LOGIN
-        
+
         if ($showlogin){
             if (!isloggedin() or isguestuser()) {
                 $text .='<li class="h"><a href="'.$CFG->wwwroot.'/login/">'.get_string('login', 'moodle').'</a></li>';
@@ -134,7 +134,7 @@ class block_menu_site_and_course extends block_base {
                         $text .='<li data-sectionid="'.$section->section.'" class="r0';
                         if(!empty($_GET[$format]) && $_GET[$format]==$section->section) {$text.=' current';}
                         $text .='">';
-                        $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/one").'" class="icon"></div><div class="column c1">';
+                        $text.='<div class="icon column c0"><img src="'.$OUTPUT->pix_url("tag", "block_menu_site_and_course").'" class="icon"></div><div class="column c1">';
                         $caption = (!empty($summary) && empty($name)) ? $summary : $name;
                         if(!$available && !$PAGE->user_is_editing()) {
                             // Section not available - show greyed out (no link)
@@ -149,21 +149,21 @@ class block_menu_site_and_course extends block_base {
                         $text .= '</div></li>';
                     }
                 }
-              
+
                 $text .= '</ul>';
-              
+
                 $text .= '<ul class="list">';
-              
+
                 // SHOW ALL
                 $text .='<li class="showall"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$COURSE->id.'&'.$format.'=all" alt="'.get_string("showall",'moodle',$numsections).'">'.get_string("showall",'block_menu_site_and_course').'</a>';
-       
+
                 if (isloggedin() and !isguestuser()) {
                     // PARTICIPANTS
                     if ($showparticipants){
                         $text .='<li class="r0"><div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/users").'" class="icon" alt="" /></div><div class="column c1"><a title="'.get_string('listofallpeople').'" href="'.$CFG->wwwroot."/user/index.php?id={$COURSE->id}".'">'.get_string('participants').'</a></div></li>';
                     }
-                
-                    // GRADES   
+
+                    // GRADES
                     if ($COURSE->showgrades) {
                         $text .='<li class="r1"><div class="icon column c0"><img src="'.$OUTPUT->pix_url("/i/grades").'" class="icon" alt="" /></div><div class="column c1"><a href="'.$CFG->wwwroot.'/grade/index.php?id='.$COURSE->id.'">'.get_string('gradebook','grades').'</a></div></li>';
                     }
@@ -175,7 +175,7 @@ class block_menu_site_and_course extends block_base {
             if ($showprofile){
                 $text .='<li class="h"><a href="'.$CFG->wwwroot.'/user/view.php?id='.$USER->id.'&course='.$COURSE->id.'">'.get_string('profile', 'moodle').'</a></li>';
             }
- 
+
             // CALENDAR
             if ($showcalendar){
                  $text .='<li class="h"><a href="'.$CFG->wwwroot.'/calendar/view.php?view=upcoming&amp;course='.$COURSE->id.'">'.get_string('calendar', 'calendar').'</a></li>';
@@ -185,7 +185,7 @@ class block_menu_site_and_course extends block_base {
         $text .= '</ul><br clear="all" /></div>';
 
         if ($PAGE->user_is_editing() && !self::$hassectiondragjs && $PAGE->pagelayout === 'course') {
-            $PAGE->requires->yui_module('moodle-block_menu_site_and_course-dragdrop', 'M.block_menu_site_and_course.init_section_dragdrop', 
+            $PAGE->requires->yui_module('moodle-block_menu_site_and_course-dragdrop', 'M.block_menu_site_and_course.init_section_dragdrop',
                 array(array(
                     'courseid' => $COURSE->id,
                     'ajaxurl' => '/course/rest.php'
