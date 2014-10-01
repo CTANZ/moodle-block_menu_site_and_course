@@ -118,7 +118,7 @@ class block_menu_site_and_course extends block_base {
             if (!empty($sections)) {
                 foreach($sections as $section) {
                     if (!empty($CFG->enableavailability)) {
-                        $ci = new condition_info_section($section, CONDITION_MISSING_EXTRATABLE);
+                        $ci = new \core_availability\info_section($section);
                         $info = '';
                         $available = $ci->is_available($info);
                     } else {
