@@ -125,7 +125,10 @@ class block_menu_site_and_course extends block_base {
                         // Availability disabled, assume available
                         $available = true;
                     }
-                    if (($section->visible || $PAGE->user_is_editing()) && $section->section > 0 && $section->section <= $numsections && ($available || $section->showavailability || $PAGE->user_is_editing())) {
+                    if ( ($section->visible || $PAGE->user_is_editing()) &&
+                            $section->section > 0 &&
+                            $section->section <= $numsections &&
+                            ($available || !empty($section->availableinfo) || $PAGE->user_is_editing())) {
                         $summary = truncate_description($section->summary); //strip_tags($section->summary);
                         $name = strip_tags($section->name);
                         if (empty($summary)) {
