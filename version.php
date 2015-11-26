@@ -19,3 +19,4 @@ $plugin->version   = 2013011702;
 $plugin->release   = "1.1.1";
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->requires  = 2012062500;
+$plugin->component = 'block_menu_site_and_course';
