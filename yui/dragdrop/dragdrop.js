@@ -153,42 +153,40 @@ YUI.add('moodle-block_menu_site_and_course-dragdrop', function(Y) {
                             if (responsetext.error) {
                                 new M.core.ajaxException(responsetext);
                             }
-                            if (Y.Node.one('.'+CSS.JUMPMENU)) {
-                                return false;
-                            }
-
-                            // Swap actual sections
-                            var dragsection = Y.one('#section-'+dragnodeid);
-                            var dropsection = Y.one('#section-'+dropnodeid);
-                            if (!this.goingup) {
-                                dropsection = dropsection.next('.'+M.course.format.get_sectionwrapperclass());
-                            }
-                            dragsection = dragsection.ancestor().removeChild(dragsection);
-                            dropsection.ancestor().insertBefore(dragsection, dropsection);
-
-                            // Get the list of nodes
-                            var sectionlist = Y.Node.all(this.sectionsselector);
-
-                            // Classic bubble sort algorithm is applied to the section
-                            // nodes between original drag node location and the new one.
-                            do {
-                                var swapped = false;
-                                for (var i = loopstart; i <= loopend; i++) {
-                                    if (this.get_course_section_id(sectionlist.item(i-1)) > this.get_course_section_id(sectionlist.item(i))) {
-                                        // Swap section id
-                                        var sectionid = sectionlist.item(i-1).get('id');
-                                        sectionlist.item(i-1).set('id', sectionlist.item(i).get('id'));
-                                        sectionlist.item(i).set('id', sectionid);
-                                        // See what format needs to swap
-                                        M.course.format.swap_sections(Y, i-1, i);
-                                        // Update flag
-                                        swapped = true;
-                                    }
+                            if (!Y.Node.one('.'+CSS.JUMPMENU)) {
+                                // Swap actual sections
+                                var dragsection = Y.one('#section-'+dragnodeid);
+                                var dropsection = Y.one('#section-'+dropnodeid);
+                                if (!this.goingup) {
+                                    dropsection = dropsection.next('.'+M.course.format.get_sectionwrapperclass());
                                 }
-                                loopend = loopend - 1;
-                            } while (swapped);
+                                dragsection = dragsection.ancestor().removeChild(dragsection);
+                                dropsection.ancestor().insertBefore(dragsection, dropsection);
 
-                            M.course.format.process_sections(Y, sectionlist, responsetext, loopstart, loopend);
+                                // Get the list of nodes
+                                var sectionlist = Y.Node.all(this.sectionsselector);
+
+                                // Classic bubble sort algorithm is applied to the section
+                                // nodes between original drag node location and the new one.
+                                do {
+                                    var swapped = false;
+                                    for (var i = loopstart; i <= loopend; i++) {
+                                        if (this.get_course_section_id(sectionlist.item(i-1)) > this.get_course_section_id(sectionlist.item(i))) {
+                                            // Swap section id
+                                            var sectionid = sectionlist.item(i-1).get('id');
+                                            sectionlist.item(i-1).set('id', sectionlist.item(i).get('id'));
+                                            sectionlist.item(i).set('id', sectionid);
+                                            // See what format needs to swap
+                                            M.course.format.swap_sections(Y, i-1, i);
+                                            // Update flag
+                                            swapped = true;
+                                        }
+                                    }
+                                    loopend = loopend - 1;
+                                } while (swapped);
+
+                                M.course.format.process_sections(Y, sectionlist, responsetext, loopstart, loopend);
+                            }
                         } catch (e) {}
 
                         // Finally, hide the lightbox
