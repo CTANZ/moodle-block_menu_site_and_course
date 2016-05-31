@@ -32,17 +32,19 @@ function _trunc_ds ($string, $lines=2) {
     foreach($words as $w) {
         switch ($w) {
         case $br: 
-            if($out) {
+            if(!empty($out)) {
                 if(--$lines<1) break 2;
                 $out.='<br />'; $len=0;
             }
             break;
         case $hp:
-            if ($out) {
+            if(!empty($out)) {
                 break 2;
             } else {
                 break;
             }
+        case '':
+            break;
         default:
             while(mb_strlen($w) > ($ch=$navmenuwidth-$len)) {
                 if($len && --$lines) {$ch+=$len; $len=0;}     //self-break on space
