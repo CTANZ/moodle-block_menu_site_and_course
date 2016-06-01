@@ -7,6 +7,10 @@
  */
 function truncate_description($string) {
     if(!($out=_trunc_ds($string))) {
+        if(preg_match('/.+src\s*=\s*"data/i', $string)) {
+            // Base-64 encoded embedded image.  Attempting to run a regex match on this will take far too long.
+            return '';
+        }
         if(preg_match('/.+alt ?= ?"([^"]+)"/i',$string,$m)) return _trunc_ds($m[1]);
     }
     return $out;
